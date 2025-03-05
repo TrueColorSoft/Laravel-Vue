@@ -19,7 +19,7 @@ class ProductController extends Controller {
     }
 
     public function show($id) {
-        $product = Product::findOrFail($id);
+        $product = Product::with('category.discount', 'discount')->findOrFail($id);
         $finalPrice = $this->discountService->applyDiscount($product, auth()->user());
         return response()->json(['product' => $product, 'final_price' => $finalPrice]);
     }

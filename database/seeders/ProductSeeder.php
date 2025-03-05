@@ -2,32 +2,42 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\Product;
+use App\Models\Discount;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
 {
     public function run()
     {
-        Product::create([
-            'title' => 'Electornics Product',
-            'description' => 'This is the description for Product 1.',
-            'price' => 19.99,
-            'category' => 'electronics',
+        $electronics = Category::create(['name' => 'Electronics']);
+        $fashion = Category::create(['name' => 'Fashion']);
+        
+        $product1 = Product::create([
+            'title' => 'Smartphone',
+            'description' => 'Latest smartphone',
+            'price' => 1000,
+            'category_id' => $electronics->id,
         ]);
 
-        Product::create([
-            'title' => 'Normal Product',
-            'description' => 'This is the description for Product 2.',
-            'price' => 29.99,
-            'category' => 'food',
+        $product2 = Product::create([
+            'title' => 'Jeans',
+            'description' => 'Stylish jeans',
+            'price' => 80,
+            'category_id' => $fashion->id,
         ]);
 
-        Product::create([
-            'title' => 'Special Product',
-            'description' => 'This is the description for Product 3.',
-            'price' => 39.99,
-            'category' => 'furniture',
+        Discount::create([
+            'discountable_type' => 'App\Models\Category',
+            'discountable_id' => $electronics->id,
+            'percentage' => 5,
+        ]);
+        
+        Discount::create([
+            'discountable_type' => 'App\Models\Product',
+            'discountable_id' => $product1->id,
+            'percentage' => 10,
         ]);
     }
 }
